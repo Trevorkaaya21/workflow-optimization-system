@@ -55,15 +55,4 @@ A full-stack reference implementation for building, automating, and optimizing b
 - `/analytics` — throughput, bottlenecks, SLA breach rate, recommendations
 - `/audit` — audit timeline with CSV export
 
-## Resume-friendly bullets (tailor numbers to your runs)
-- Built a full-stack Business Workflow Optimization System to automate multi-step approvals and task routing, reducing manual handoffs by implementing rule-based escalations, SLA timers, and role-based assignments.
-- Designed a relational schema for workflows, steps, instances, and audit logs, enabling end-to-end traceability and compliance reporting across all workflow actions.
-- Implemented a job queue for reminders/escalations (SLA breaches) and real-time notifications, improving throughput by preventing stuck tasks and delayed approvals.
-- Delivered analytics dashboards (cycle time, bottlenecks, SLA breach rate) using SQL aggregations, helping identify high-friction steps and optimize routing rules.
-- Containerized services with Docker and staged lint/test/build pipelines using GitHub Actions for reliable releases.
 
-## Next steps (suggested)
-- Add real notification providers (Slack/Email) to `automationService.ts`
-- Wire Grafana/Prometheus metrics using existing structured logs
-- Harden auth (password resets, refresh tokens) and add SSO provider
-- Build a CI workflow to run lint/tests and push containers
