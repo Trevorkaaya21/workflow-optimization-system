@@ -1,0 +1,14 @@
+.DS_Store
+node_modules
+dist
+.turbo
+.next
+coverage
+.env
+.env.local
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+postgres-data
+redis-data
+prisma/dev.db

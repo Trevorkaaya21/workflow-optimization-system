@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workflow {
+  id          String            @id @default(cuid())
+  name        String
+  version     Int
+  status      String            @default("draft")
+  createdBy   String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  steps       WorkflowStep[]
+  rules       Rule[]
+  instances   WorkflowInstance[]
+}
+
+model WorkflowStep {
+  id           String    @id @default(cuid())
+  workflow     Workflow  @relation(fields: [workflowId], references: [id])
+  workflowId   String
+  stepOrder    Int
+  type         String
+  roleRequired String
+  slaMinutes   Int?
+  config       Json?
+  createdAt    DateTime  @default(now())
+  tasks        Task[]
+}
+
+model WorkflowInstance {
+  id           String      @id @default(cuid())
+  workflow     Workflow    @relation(fields: [workflowId], references: [id])
+  workflowId   String
+  status       String      @default("in_progress")
+  startedAt    DateTime    @default(now())
+  completedAt  DateTime?
+  tasks        Task[]
+  auditLogs    EventAuditLog[]
+}
+
+model Task {
+  id          String            @id @default(cuid())
+  instance    WorkflowInstance  @relation(fields: [instanceId], references: [id])
+  instanceId  String
+  step        WorkflowStep      @relation(fields: [stepId], references: [id])
+  stepId      String
+  assigneeId  String?
+  status      String            @default("pending")
+  dueAt       DateTime?
+  createdAt   DateTime          @default(now())
+  completedAt DateTime?
+}
+
+model EventAuditLog {
+  id         String           @id @default(cuid())
+  instance   WorkflowInstance? @relation(fields: [instanceId], references: [id])
+  instanceId String?
+  actorId    String
+  action     String
+  metadata   Json?
+  timestamp  DateTime         @default(now())
+}
+
+model Rule {
+  id         String    @id @default(cuid())
+  workflow   Workflow  @relation(fields: [workflowId], references: [id])
+  workflowId String
+  condition  String
+  action     String
+  priority   Int
+  createdAt  DateTime  @default(now())
+}
